@@ -49,7 +49,7 @@ function SignIn() {
   }
 
   return (
-    <button className='sign-in' onClick={signInWithGoogle}><img src='googleg.png' />Sign in with Google</button> // <img style={{ width: 'auto' }} src='google.png' />
+    <button className='sign-in' onClick={signInWithGoogle}><img src='googleg.png' />Sign in with Google</button>
   )
 }
 
@@ -113,7 +113,7 @@ function ChatRoom() {
       <form onSubmit={sendMessage}>
         <input value={formValue} onChange={(e) => setFormValue(e.target.value)} />
         <button type="submit">
-          <img style={{ width: '100%', margin: '0' }} src="right-arrow.svg" />
+          <img src="right-arrow.svg" />
         </button>
       </form>
     </>

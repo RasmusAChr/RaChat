@@ -1,8 +1,7 @@
-/* Existing CSS styles */
-
 body {
   background-color: #282c34;
   margin-top: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .App {
@@ -32,6 +31,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 99vh;
   max-height: 99vh;
   background-color: rgb(102, 102, 102);
 }
@@ -54,7 +54,7 @@ main::-webkit-scrollbar-track {
 }
 
 main::-webkit-scrollbar-thumb {
-  background: #6649b8;
+  background: #f0f0f0;
 }
 
 form {
@@ -66,24 +66,33 @@ form {
   max-width: 728px;
   display: flex;
   font-size: 1.5rem;
+  align-items: center;
 }
 
 form button {
   border-radius: 50%;
-  background-color: rgb(56, 56, 143);
-  padding: 10px;
-  width: 100px;
+  background-color: rgb(120, 120, 120);
+  width: 75px;
+  height: 75px;
+  margin-right: 15px;
+}
+
+form button img {
+  width: 50px;
+  margin: 0 0 0 -18px;
 }
 
 input {
-  line-height: 1.5;
+  line-height: 2;
   width: 100%;
   font-size: 1.5rem;
-  background: rgb(58, 58, 58);
+  background: rgb(31, 31, 31);
   color: white;
   outline: none;
   border: none;
-  padding: 0 10px;
+  border-radius: 20px;
+  padding: 0 15px;
+  margin: 0 25px;
 }
 
 button {
