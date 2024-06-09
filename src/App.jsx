@@ -24,13 +24,32 @@ function App() {
   return (
     <>
       <div className="App">
-        <header>
+        {user ?
+          <header>
+            <div></div>
+            <div><h1>RaChat</h1></div>
+            <div><SignOut auth={auth} /></div>
+          </header>
+          :
+          <header>
+            <div style={user ? { display: 'block' } : { display: 'none' }} ></div>
+            <div style={{ width: '100%' }}><h1>RaChat</h1></div>
+          </header>
+        }
+        {/* <header>
           <div></div>
           <div><h1>RaChat</h1></div>
           <div><SignOut auth={auth} /></div>
-        </header>
+        </header> */}
         <section>
-          {user ? <ChatRoom messagesRef={messagesRef} auth={auth} /> : <SignIn auth={auth} />}
+          {user ? <ChatRoom messagesRef={messagesRef} auth={auth} /> :
+            <>
+              <div className="welcome-message">
+                <h2>Welcome to RaChat</h2>
+                <p>This is my own home-made live chat platform. To be able to use the chat, you'll have to sign in using a Google account. Feel free to try it out, but remember to keep a sober tone, since it's a public chat. To delete a message of your own, you can click on your profile picture besides the message.</p>
+              </div>
+              <SignIn auth={auth} />
+            </>}
         </section>
       </div>
     </>

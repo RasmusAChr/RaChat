@@ -2,7 +2,7 @@ import React from "react";
 
 function SignOut(props) {
     return props.auth.currentUser && (
-        <button onClick={() => props.auth.signOut()}>Sign out</button>
+        <button id="sign-out-btn" onClick={() => props.auth.signOut()}>Sign out</button>
     )
 }
 

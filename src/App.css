@@ -1,6 +1,6 @@
 body {
   background-color: #282c34;
-  margin-top: 0;
+  margin: 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -31,15 +31,15 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 99vh;
-  max-height: 99vh;
+  min-height: 100vh;
+  max-height: 100vh;
   background-color: rgb(102, 102, 102);
 }
 
 main {
   padding: 0 10px 0 10px;
   height: 80vh;
-  margin: 10vh 0 9vh 0;
+  margin: 10vh 0 10vh 0;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
@@ -278,6 +278,24 @@ header div:has(> button) {
   z-index: 999;
 }
 
+header> :nth-child(2) {
+  font-size: 1.5rem;
+}
+
+.welcome-message {
+  background-color: #404040;
+  color: white;
+  text-align: center;
+  margin: 20px 5%;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: 2px solid #333333;
+}
+
+.welcome-message p {
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .sent p {
     margin: 0 5px 0 10%;
@@ -285,5 +303,34 @@ header div:has(> button) {
 
   .received p {
     margin: 0 10% 0 5px;
+  }
+
+  .App section {
+    min-height: 100dvh;
+    max-height: 100dvh;
+  }
+
+  input {
+    margin: 0 10px;
+  }
+
+  #sign-out-btn {
+    border-radius: 12px;
+    padding: 15px 32px;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  header> :first-child {
+    display: none;
+  }
+
+  header> :nth-child(2) {
+    width: 60%;
+    font-size: 1.3rem;
+  }
+
+  header> :nth-child(3) {
+    width: 40%;
   }
 }

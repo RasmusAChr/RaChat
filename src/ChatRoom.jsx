@@ -57,7 +57,7 @@ function ChatRoom(props) {
                             lastDate = messageDate; // Update last date
                             return (
                                 <React.Fragment key={msg.id}>
-                                    {isNewDay && <div id='span-date'><span>{messageDate}</span></div>} {/* Render span if it's a new day */}
+                                    {isNewDay && <div id='span-date'><span><u><b>{messageDate}</b></u></span></div>} {/* Render span if it's a new day */}
                                     <ChatMessage auth={auth} key={msg.id} message={msg} messagesRef={messagesRef} />
                                 </React.Fragment>
                             );
