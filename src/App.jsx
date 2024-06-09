@@ -6,11 +6,10 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-import { v4 as uuidv4 } from 'uuid';
-
-import { format } from 'date-fns';
+import SignIn from './SignIn.jsx';
+import SignOut from './SignOut.jsx';
+import ChatRoom from './ChatRoom.jsx';
 
 firebase.initializeApp({
   apiKey: "AIzaSyB_u3atfkoaySRM2T80Rr0tmoxLoknWXGA",
@@ -34,168 +33,14 @@ function App() {
         <header>
           <div></div>
           <div><h1>RaChat</h1></div>
-          <div><SignOut /></div>
+          <div><SignOut auth={auth} /></div>
         </header>
         <section>
-          {user ? <ChatRoom /> : <SignIn />}
+          {user ? <ChatRoom messagesRef={messagesRef} auth={auth} /> : <SignIn auth={auth} />}
         </section>
       </div>
     </>
   )
-}
-
-function SignIn() {
-  const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
-  }
-
-  return (
-    <button className='sign-in' onClick={signInWithGoogle}><img src='googleg.png' alt="Google Logo" />Sign in with Google</button>
-  )
-}
-
-function SignOut() {
-  return auth.currentUser && (
-    <button onClick={() => auth.signOut()}>Sign out</button>
-  )
-}
-
-function ChatRoom() {
-  const dummy = useRef();
-  const query = messagesRef.orderBy('createdAt').limit(25);
-  const [messages] = useCollectionData(query, { idField: 'id' });
-  const [formValue, setFormValue] = useState('');
-
-  useEffect(() => {
-    dummy.current.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  const sendMessage = async (e) => {
-    e.preventDefault();
-    if (!formValue.trim()) {
-      return;
-    }
-    const { uid, photoURL } = auth.currentUser;
-    const messageId = uuidv4();
-    await messagesRef.add({
-      id: messageId,
-      text: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      uid,
-      photoURL,
-      displayName: auth.currentUser.displayName
-    });
-    setFormValue('');
-  };
-
-  let lastDate = null; // Variable to store the last message date
-
-  return (
-    <>
-      <main>
-        <div>
-          {messages &&
-            messages.map((msg) => {
-              if (!msg.createdAt) {
-                return null; // Skip rendering if createdAt is null or undefined
-              }
-              const options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
-              const messageDate = msg.createdAt.toDate().toLocaleDateString('en-US', options); // Get message date
-              const isNewDay = messageDate !== lastDate; // Check if it's a new day
-              lastDate = messageDate; // Update last date
-              return (
-                <React.Fragment key={msg.id}>
-                  {isNewDay && <div id='span-date'><span>{messageDate}</span></div>} {/* Render span if it's a new day */}
-                  <ChatMessage key={msg.id} message={msg} />
-                </React.Fragment>
-              );
-            })}
-        </div>
-        <div ref={dummy}></div>
-      </main>
-      <form onSubmit={sendMessage}>
-        <input value={formValue} onChange={(e) => setFormValue(e.target.value)} />
-        <button type="submit">
-          <img src="right-arrow.svg" alt="Send" />
-        </button>
-      </form>
-    </>
-  );
-}
-
-function ChatMessage(props) {
-  const { text, uid, photoURL, displayName, createdAt, id } = props.message; // Destructure id from props.message
-  const [showConfirm, setShowConfirm] = useState(false);
-
-  const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
-
-  // Format the date to a readable format
-  const formattedDate = format(createdAt.toDate(), 'HH:mm');
-
-  const deleteMessage = async (messageId) => {
-    try {
-      const query = await messagesRef.where('id', '==', messageId).get();
-      const documentRef = query.docs[0].ref;
-      await documentRef.delete();
-    } catch (error) {
-      console.error('Error removing document: ', error);
-    }
-  };
-
-  const handleDelete = () => {
-    setShowConfirm(true);
-  };
-
-  const confirmDelete = (confirm) => {
-    setShowConfirm(false);
-    if (confirm) {
-      deleteMessage(id);
-    }
-  };
-
-  let deleteButton;
-  if (uid === auth.currentUser.uid) {
-    deleteButton = <img src={photoURL} alt="User" onClick={handleDelete} />;
-  } else {
-    deleteButton = <img src={photoURL} alt="User" />;;
-  }
-
-  return (
-    <>
-      <div className={`message ${messageClass}`}>
-        <span id='name-span'>{displayName} - {formattedDate}</span>
-        <div className="message-content">
-          <div>
-            {deleteButton}
-          </div>
-          <p>{text}</p>
-        </div>
-      </div>
-      {showConfirm && (
-        <ConfirmDialog onConfirm={confirmDelete} />
-      )}
-      {showConfirm && (
-        <>
-          <div className="overlay"></div>
-          <ConfirmDialog onConfirm={confirmDelete} />
-        </>
-      )}
-    </>
-  );
-}
-
-function ConfirmDialog({ onConfirm }) {
-  return (
-    <div className="confirm-dialog">
-      <div className="confirm-dialog-content">
-        <h3>Delete message</h3>
-        <p>Are you sure you want to delete your message?</p>
-        <button onClick={() => onConfirm(true)}>Yes</button>
-        <button onClick={() => onConfirm(false)}>No</button>
-      </div>
-    </div>
-  );
 }
 
 export default App;
