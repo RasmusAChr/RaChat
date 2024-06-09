@@ -5,21 +5,15 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 
+import FirebaseConfig from './FirebaseConfig.jsx';
+
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 import SignIn from './SignIn.jsx';
 import SignOut from './SignOut.jsx';
 import ChatRoom from './ChatRoom.jsx';
 
-firebase.initializeApp({
-  apiKey: "AIzaSyB_u3atfkoaySRM2T80Rr0tmoxLoknWXGA",
-  authDomain: "rac-rachat.firebaseapp.com",
-  projectId: "rac-rachat",
-  storageBucket: "rac-rachat.appspot.com",
-  messagingSenderId: "2577915894",
-  appId: "1:2577915894:web:a5fe54e95a3ef42c5971d7",
-  measurementId: "G-ERSSYD9RVN"
-});
+firebase.initializeApp(FirebaseConfig);
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
