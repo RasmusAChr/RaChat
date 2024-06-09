@@ -8,6 +8,8 @@ import 'firebase/compat/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { format } from 'date-fns';
 
 firebase.initializeApp({
@@ -75,7 +77,9 @@ function ChatRoom() {
       return;
     }
     const { uid, photoURL } = auth.currentUser;
+    const messageId = uuidv4();
     await messagesRef.add({
+      id: messageId,
       text: formValue,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       uid,
@@ -103,7 +107,7 @@ function ChatRoom() {
               return (
                 <React.Fragment key={msg.id}>
                   {isNewDay && <div id='span-date'><span>{messageDate}</span></div>} {/* Render span if it's a new day */}
-                  <ChatMessage key={msg.id} message={msg} displayName={msg.displayName} createdAt={msg.createdAt} />
+                  <ChatMessage key={msg.id} message={msg} />
                 </React.Fragment>
               );
             })}
@@ -121,25 +125,44 @@ function ChatRoom() {
 }
 
 function ChatMessage(props) {
-  const { text, uid, photoURL, displayName, createdAt } = props.message;
+  const { text, uid, photoURL, displayName, createdAt, id } = props.message; // Destructure id from props.message
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
   // Format the date to a readable format
   const formattedDate = format(createdAt.toDate(), 'HH:mm');
 
+  const deleteMessage = async (messageId) => {
+    try {
+      const query = await messagesRef.where('id', '==', messageId).get();
+      const documentRef = query.docs[0].ref;
+      await documentRef.delete();
+    } catch (error) {
+      console.error('Error removing document: ', error);
+    }
+  };
+
+  const handleDelete = () => {
+    deleteMessage(props.message.id);
+  };
+
   return (
     <>
       <div className={`message ${messageClass}`}>
         <span id='name-span'>{displayName} - {formattedDate}</span>
         <div className="message-content">
-          <img src={photoURL} alt="User" />
+          <div>
+            <img src={photoURL} alt="User" />
+            {uid === auth.currentUser.uid && ( // Show delete button only for messages sent by the current user
+              <button style={{ padding: '5px' }} onClick={handleDelete}>d</button>
+            )}
+          </div>
+
           <p>{text}</p>
         </div>
       </div>
     </>
-  )
-
+  );
 }
 
 export default App;
