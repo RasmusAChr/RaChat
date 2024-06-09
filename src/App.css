@@ -142,11 +142,15 @@ li {
 
 .message-content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .sent .message-content {
   flex-direction: row-reverse;
+}
+
+p {
+  text-align: left;
 }
 
 .sent p {
@@ -154,13 +158,21 @@ li {
   background: #0b93f6;
   border-radius: 25px;
   padding: 10px 20px;
-  margin: 0 5px;
+  margin: 0 5px 0 30%;
 }
 
 span {
   color: white;
   margin-top: 10px;
   display: flex;
+}
+
+.sent #name-span {
+  margin-right: 55px;
+}
+
+.received #name-span {
+  margin-left: 55px;
 }
 
 .sent span {
@@ -176,7 +188,7 @@ span {
   color: black;
   border-radius: 25px;
   padding: 10px 20px;
-  margin: 0 5px;
+  margin: 0 30% 0 5px;
 }
 
 img {
@@ -196,4 +208,14 @@ header div:has(> button) {
 
 #span-date {
   display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .sent p {
+    margin: 0 5px 0 10%;
+  }
+
+  .received p {
+    margin: 0 10% 0 5px;
+  }
 }
