@@ -1,5 +1,7 @@
 # RaChat
-RaChat is a simple, mobile-friendly chat application built using React and Firebase. This project allows users to sign in with Google, send and receive messages in real-time, and delete their own messages.
+RaChat is a simple, mobile-friendly chat application built using React and Firebase. This project allows users to sign in with Google, send and receive messages in real-time, and delete their own messages.<br>
+
+You can watch a live demo of this [here](https://rachat.rasmusac.dk/).
 
 ## Table of Contents
 - [Introduction](#introduction)
