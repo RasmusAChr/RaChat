@@ -86,7 +86,7 @@ form button img {
   cursor: pointer;
 }
 
-input {
+#text-input {
   line-height: 2;
   width: 100%;
   font-size: 1.5rem;
@@ -96,7 +96,7 @@ input {
   border: none;
   border-radius: 20px;
   padding: 0 15px;
-  margin: 0 25px;
+  margin: 0 15px;
 }
 
 button {
@@ -187,12 +187,63 @@ span {
   flex-direction: row;
 }
 
+.sent #messagePhoto {
+  text-align: right;
+  
+}
+
+.sent .messagePhotoContainer {
+  width: 100%;
+  text-align: right;
+}
+
+#messagePhoto {
+  width: 150px;
+  height: auto;
+  border-radius: 10px;
+  margin: 0px 55px;
+}
+
 .received p {
   background: #e5e5ea;
   color: black;
   border-radius: 25px;
   padding: 10px 20px;
   margin: 0 30% 0 5px;
+}
+
+.received .messagePhotoContainer {
+  width: 100%;
+  text-align: left;
+}
+
+.imageBtnContainer {
+  padding: 0 15px 0 0;
+  display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.uploadImgBtn {
+  width: 120px;
+  height: auto;
+  text-align: center;
+  font-size: 0.75rem;
+  padding: 10px;
+  margin: 0;
+  border-radius: 25px;
+}
+
+.selectedImgText {
+  color: white;
+  margin: 2px 0 0 0;
+  font-size: 0.5rem;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block; /* Ensure the element respects width restrictions */
+  vertical-align: center;
 }
 
 img {
@@ -310,7 +361,7 @@ header> :nth-child(2) {
     max-height: 100dvh;
   }
 
-  input {
+  #text-input {
     margin: 0 10px;
   }
 
