@@ -169,10 +169,13 @@ function ChatRoom(props) {
                         <p className='selectedImgText'>‎</p>
                     )}
                 </div>
-
-                <button type='submit'>
+                <div className='imgButton' onClick={handleChooseImage}>
+                    {image ? <img src='deselectimgicon.png' alt='Send' /> : <img src='selectimgicon.png' alt='Send' />}
+                    
+                </div>
+                <div className='sendButton' onClick={sendMessage}>
                     <img src='right-arrow.svg' alt='Send' />
-                </button>
+                </div>
             </form>
         </>
     );

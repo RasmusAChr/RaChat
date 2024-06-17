@@ -164,6 +164,10 @@ li {
   align-items: flex-start;
 }
 
+.message-content #userPhoto {
+  border-radius: 50%;
+}
+
 .sent .message-content {
   flex-direction: row-reverse;
 }
@@ -268,7 +272,6 @@ span {
 img {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
   margin: 2px 5px;
 }
 
@@ -366,6 +369,13 @@ header> :nth-child(2) {
   text-align: center;
 }
 
+.imgButton {
+  display: none;
+}
+
+.sendButton {
+  padding: 0 15px 0 0;
+}
 
 @media (max-width: 768px) {
   .sent p {
@@ -379,10 +389,6 @@ header> :nth-child(2) {
   .App section {
     min-height: 100dvh;
     max-height: 100dvh;
-  }
-
-  #text-input {
-    margin: 0 10px;
   }
 
   #sign-out-btn {
@@ -403,5 +409,37 @@ header> :nth-child(2) {
 
   header> :nth-child(3) {
     width: 40%;
+  }
+
+  .imageBtnContainer {
+    display:none;
+  }
+
+  #text-input {
+    margin: 0;
+    padding: 0 10px;
+    width: 100%;
+    box-sizing: border-box
+  }
+
+  .inputTxtContainer {
+    padding: 0 5px;
+  }
+
+  .imgButton {
+    display: block;
+  }
+
+  .sendButton {
+    padding: 0 10px 0 0;
+  }
+
+  form {
+    height: 8vh;
+  }
+
+  main {
+    height: 82vh;
+    margin: 10vh 0 8vh 0;
   }
 }
