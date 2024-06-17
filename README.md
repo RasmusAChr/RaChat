@@ -46,6 +46,9 @@ RaChat is a responsive web application designed to facilitate real-time communic
 
 2. **Install dependencies:**
    - `npm install`.
+   - `npm install firebase`.
+   - `npm install uuid`.
+   - `npm install date-fns`.
 
 3. **Start the application:**
    - `npm start`
