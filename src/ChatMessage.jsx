@@ -58,11 +58,11 @@ function ChatMessage(props) {
                         {userPhoto}
                     </div>
 
-                    {text && <p>{text}</p>}
+                    {text ? <p>{text}</p> : <a href={imageUrl} target="_blank"><img class='messagePhoto imgWithText' src={imageUrl} alt="Sent"/></a>}
                     
                 </div>
                 <div class='messagePhotoContainer'>
-                {imageUrl && <a href={imageUrl} target="_blank"><img id='messagePhoto' src={imageUrl} alt="Sent"/></a>}
+                {imageUrl && text && <a href={imageUrl} target="_blank"><img class='messagePhoto' src={imageUrl} alt="Sent"/></a>}
                 </div>
                 
             </div>
