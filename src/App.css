@@ -82,7 +82,7 @@ form button img {
   margin: 0 0 0 -18px;
 }
 
-.message img {
+.selfPhoto {
   cursor: pointer;
 }
 
@@ -164,7 +164,7 @@ li {
   align-items: flex-start;
 }
 
-.message-content #userPhoto {
+.message-content .userPhoto {
   border-radius: 50%;
 }
 

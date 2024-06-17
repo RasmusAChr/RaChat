@@ -44,9 +44,9 @@ function ChatMessage(props) {
 
     let userPhoto;
     if (uid === props.auth.currentUser.uid) {
-        userPhoto = <img id='userPhoto' src={photoURL} alt="User" onClick={handleDelete} />;
+        userPhoto = <img class='userPhoto selfPhoto' src={photoURL} alt="User" onClick={handleDelete} />;
     } else {
-        userPhoto = <img src={photoURL} alt="User" />;
+        userPhoto = <img class='userPhoto' src={photoURL} alt="User" />;
     }
 
     // Function to convert URLs in text into clickable links
