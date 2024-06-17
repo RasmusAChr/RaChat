@@ -184,6 +184,10 @@ p {
   margin: 0 5px 0 30%;
 }
 
+.sent a {
+  color: white;
+}
+
 span {
   color: white;
   margin-top: 10px;
@@ -233,6 +237,10 @@ span {
   border-radius: 25px;
   padding: 10px 20px;
   margin: 0 30% 0 5px;
+}
+
+.received a {
+  color: black;
 }
 
 .received .messagePhotoContainer {
