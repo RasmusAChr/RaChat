@@ -82,7 +82,7 @@ form button img {
   margin: 0 0 0 -18px;
 }
 
-.message img {
+.selfPhoto {
   cursor: pointer;
 }
 
@@ -164,7 +164,7 @@ li {
   align-items: flex-start;
 }
 
-.message-content #userPhoto {
+.message-content .userPhoto {
   border-radius: 50%;
 }
 
@@ -182,6 +182,10 @@ p {
   border-radius: 25px;
   padding: 10px 20px;
   margin: 0 5px 0 30%;
+}
+
+.sent a {
+  color: white;
 }
 
 span {
@@ -233,6 +237,10 @@ span {
   border-radius: 25px;
   padding: 10px 20px;
   margin: 0 30% 0 5px;
+}
+
+.received a {
+  color: black;
 }
 
 .received .messagePhotoContainer {

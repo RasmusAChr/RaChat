@@ -44,10 +44,16 @@ function ChatMessage(props) {
 
     let userPhoto;
     if (uid === props.auth.currentUser.uid) {
-        userPhoto = <img id='userPhoto' src={photoURL} alt="User" onClick={handleDelete} />;
+        userPhoto = <img class='userPhoto selfPhoto' src={photoURL} alt="User" onClick={handleDelete} />;
     } else {
-        userPhoto = <img src={photoURL} alt="User" />;
+        userPhoto = <img class='userPhoto' src={photoURL} alt="User" />;
     }
+
+    // Function to convert URLs in text into clickable links
+    const textWithLinks = (text) => {
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        return text.replace(urlRegex, (url) => `<a href="${url}" target="_blank">${url}</a>`);
+    };
 
     return (
         <>
@@ -57,12 +63,11 @@ function ChatMessage(props) {
                     <div>
                         {userPhoto}
                     </div>
-
-                    {text ? <p>{text}</p> : <a href={imageUrl} target="_blank"><img class='messagePhoto imgWithText' src={imageUrl} alt="Sent"/></a>}
+                    {text ? <p dangerouslySetInnerHTML={{ __html: textWithLinks(text) }} /> : <a href={imageUrl} target="_blank"><img className='messagePhoto imgWithText' src={imageUrl} alt="Sent"/></a>}
                     
                 </div>
-                <div class='messagePhotoContainer'>
-                {imageUrl && text && <a href={imageUrl} target="_blank"><img class='messagePhoto' src={imageUrl} alt="Sent"/></a>}
+                <div className='messagePhotoContainer'>
+                {imageUrl && text && <a href={imageUrl} target="_blank"><img className='messagePhoto' src={imageUrl} alt="Sent"/></a>}
                 </div>
                 
             </div>
