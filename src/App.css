@@ -221,7 +221,7 @@ span {
 }
 
 .messagePhoto {
-  width: 150px;
+  width: 250px;
   height: auto;
   border-radius: 10px;
   margin: 0px 55px;
@@ -375,6 +375,7 @@ header> :nth-child(2) {
 
 .sendButton {
   padding: 0 15px 0 0;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {

@@ -6,6 +6,7 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage'; // Import Firebase Storage
 import ChatMessage from './ChatMessage';
+import imageCompression from 'browser-image-compression'; // Import image compression library
 
 function ChatRoom(props) {
     const messagesRef = props.messagesRef;
@@ -24,6 +25,23 @@ function ChatRoom(props) {
         dummy.current.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
+    // Function to handle image compression
+    const compressImage = async (file) => {
+        try {
+            const options = {
+                maxSizeMB: 0.25,
+                maxWidthOrHeight: 1920,
+                useWebWorker: true,
+            };
+            const compressedFile = await imageCompression(file, options);
+            return compressedFile;
+        } catch (error) {
+            console.error('Error compressing image:', error);
+            throw error;
+        }
+    };
+
+    // Function to handle sending a message
     const sendMessage = async (e) => {
         e.preventDefault();
         if (!formValue.trim() && !image) {
@@ -35,8 +53,9 @@ function ChatRoom(props) {
         let imageUrl = '';
 
         if (image) {
+            const compressedImage = await compressImage(image);
             const imageRef = storage.ref().child(`images/${messageId}`);
-            const uploadTask = imageRef.put(image);
+            const uploadTask = imageRef.put(compressedImage);
 
             // Listen for state changes, errors, and completion of the upload.
             uploadTask.on(
@@ -50,33 +69,26 @@ function ChatRoom(props) {
                     console.error('Error uploading image:', error);
                     // Handle error
                 },
-                () => {
+                async () => {
                     // Upload completed successfully, get download URL
-                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        console.log('File available at', downloadURL);
-                        imageUrl = downloadURL;
+                    imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
+                    console.log('File available at', imageUrl);
 
-                        // Add message to Firestore
-                        messagesRef
-                            .add({
-                                id: messageId,
-                                text: formValue,
-                                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                                uid,
-                                photoURL,
-                                displayName,
-                                imageUrl,
-                            })
-                            .then(() => {
-                                setFormValue('');
-                                setImage(null);
-                                setUploadProgress(0); // Reset upload progress
-                                fileInputRef.current.value = null; // Reset file input
-                            })
-                            .catch((error) => {
-                                console.error('Error adding message to Firestore:', error);
-                            });
+                    // Add message to Firestore
+                    await messagesRef.add({
+                        id: messageId,
+                        text: formValue,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        uid,
+                        photoURL,
+                        displayName,
+                        imageUrl,
                     });
+
+                    setFormValue('');
+                    setImage(null);
+                    setUploadProgress(0); // Reset upload progress
+                    fileInputRef.current.value = null; // Reset file input
                 }
             );
         } else {
@@ -97,9 +109,11 @@ function ChatRoom(props) {
         }
     };
 
-    const handleImageChange = (e) => {
+    const handleImageChange = async (e) => {
         if (e.target.files[0]) {
-            setImage(e.target.files[0]);
+            const file = e.target.files[0];
+            const compressedFile = await compressImage(file);
+            setImage(compressedFile);
         }
     };
 
