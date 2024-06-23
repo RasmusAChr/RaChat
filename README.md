@@ -13,7 +13,7 @@ You can watch a live demo of this [here](https://rachat.rasmusac.dk/).
 - [License](#license)
 
 ## Introduction
-RaChat is a responsive web application designed to facilitate real-time communication. Users can sign in using their Google accounts, participate in chat rooms, and manage their messages. The application uses Firebase for authentication, database, and hosting services.
+RaChat is a responsive web application designed to support real-time communication. Users can sign in using their Google accounts, participate in the chat room, and manage their messages. The application uses Firebase for authentication, database, and hosting services.
 
 ## Features
 - Mobile friendly.
