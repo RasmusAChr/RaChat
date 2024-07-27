@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
-
 import FirebaseConfig from './FirebaseConfig.jsx';
-
-import { useAuthState } from 'react-firebase-hooks/auth';
-
 import SignIn from './SignIn.jsx';
 import SignOut from './SignOut.jsx';
 import ChatRoom from './ChatRoom.jsx';
@@ -17,21 +12,13 @@ firebase.initializeApp(FirebaseConfig);
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
-const messagesRef = firestore.collection('messages'); // Define messagesRef here
-
-// Loading Screen Component
-function LoadingScreen() {
-  return (
-    <div className="loading-screen">
-      Loading...
-    </div>
-  );
-}
+const messagesRef = firestore.collection('messages');
 
 function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
+  // When mounting set potential user.
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
@@ -42,13 +29,15 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  // If loading (authenticating user) then dont show anything yet.
   if (loading) {
-    return <LoadingScreen />;
+    return 
   }
 
   return (
     <div className="App">
       {user ? (
+        // User view
         <>
           <header>
             <div></div>
@@ -60,6 +49,7 @@ function App() {
           </section>
         </>
       ) : (
+        // Guest view
         <>
           <header>
             <div style={user ? { display: 'block' } : { display: 'none' }} ></div>

@@ -4,23 +4,24 @@ import { v4 as uuidv4 } from 'uuid';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
-import 'firebase/compat/storage'; // Import Firebase Storage
+import 'firebase/compat/storage';
 import ChatMessage from './ChatMessage';
-import imageCompression from 'browser-image-compression'; // Import image compression library
+import imageCompression from 'browser-image-compression';
 
 function ChatRoom(props) {
-    const messagesRef = props.messagesRef;
-    const auth = props.auth;
-    const storage = firebase.storage(); // Initialize Firebase Storage
+    const messagesRef = props.messagesRef; // Initialize the messages from props.
+    const auth = props.auth; // Initialize the user.
+    const storage = firebase.storage(); // Initialize Firebase Storage.
 
-    const dummy = useRef();
-    const fileInputRef = useRef(); // Declare the file input reference
-    const query = messagesRef.orderBy('createdAt').limit(25);
-    const [messages] = useCollectionData(query, { idField: 'id' });
-    const [formValue, setFormValue] = useState('');
-    const [image, setImage] = useState(null);
-    const [uploadProgress, setUploadProgress] = useState(0); // State for upload progress
+    const dummy = useRef(); // Dummy is used to scroll down to the latest message when mounting and reloading.
+    const fileInputRef = useRef(); // Declare the file input reference.
+    const query = messagesRef.orderBy('createdAt').limit(25); // Order by the latest 25 messages that have been sent.
+    const [messages] = useCollectionData(query, { idField: 'id' }); // Collects messages.
+    const [formValue, setFormValue] = useState(''); // Text field value.
+    const [image, setImage] = useState(null); // Image upload.
+    const [uploadProgress, setUploadProgress] = useState(0); // State for upload progress.
 
+    // Dummy is used to scroll to the latest message at the bottom.
     useEffect(() => {
         dummy.current.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
@@ -44,6 +45,8 @@ function ChatRoom(props) {
     // Function to handle sending a message
     const sendMessage = async (e) => {
         e.preventDefault();
+
+        // If there isnt any text or image do nothing.
         if (!formValue.trim() && !image) {
             return;
         }
@@ -52,29 +55,30 @@ function ChatRoom(props) {
         const messageId = uuidv4();
         let imageUrl = '';
 
+        // If there is an image included in the text.
         if (image) {
-            const compressedImage = await compressImage(image);
-            const imageRef = storage.ref().child(`images/${messageId}`);
-            const uploadTask = imageRef.put(compressedImage);
+            const compressedImage = await compressImage(image); // Compressing the image.
+            const imageRef = storage.ref().child(`images/${messageId}`); // Getting the database reference to the image.
+            const uploadTask = imageRef.put(compressedImage); // Upload the image at the specified location in the database.
 
             // Listen for state changes, errors, and completion of the upload.
             uploadTask.on(
                 'state_changed',
                 (snapshot) => {
-                    // Calculate progress percentage
+                    // Calculate progress percentage.
                     const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
                     setUploadProgress(progress);
                 },
                 (error) => {
                     console.error('Error uploading image:', error);
-                    // Handle error
+                    // Handle error.
                 },
                 async () => {
-                    // Upload completed successfully, get download URL
+                    // Upload completed successfully, get download URL.
                     imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
                     console.log('File available at', imageUrl);
 
-                    // Add message to Firestore
+                    // Add message to the database.
                     await messagesRef.add({
                         id: messageId,
                         text: formValue,
@@ -85,14 +89,14 @@ function ChatRoom(props) {
                         imageUrl,
                     });
 
-                    setFormValue('');
-                    setImage(null);
+                    setFormValue(''); // Reset the text field.
+                    setImage(null); // Reset the image selector.
                     setUploadProgress(0); // Reset upload progress
-                    fileInputRef.current.value = null; // Reset file input
+                    fileInputRef.current.value = null; // Reset file input.
                 }
             );
         } else {
-            // No image case
+            // No image case.
             await messagesRef.add({
                 id: messageId,
                 text: formValue,
@@ -103,12 +107,13 @@ function ChatRoom(props) {
                 imageUrl,
             });
 
-            setFormValue('');
-            setImage(null);
-            fileInputRef.current.value = null; // Reset file input
+            setFormValue(''); // Reset the text field.
+            setImage(null); // Reset the image selector.
+            fileInputRef.current.value = null; // Reset file .
         }
     };
 
+    // Handles the image file selection.
     const handleImageChange = async (e) => {
         if (e.target.files[0]) {
             const file = e.target.files[0];
@@ -117,6 +122,7 @@ function ChatRoom(props) {
         }
     };
 
+    // Toggles image selection or deselection.
     const handleChooseImage = () => {
         if (image) {
             setImage(null); // Clear the selected image

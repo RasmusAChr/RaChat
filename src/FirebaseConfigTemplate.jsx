@@ -1,3 +1,7 @@
+// Place your Firebase config here.
+// Remember to rename the file, const and export to 'FirebaseConfig'.
+// You can find the config in the Project setting page in the Firebase Console.
+
 const FirebaseConfigTemplate = {
     apiKey: "YOUR_API_KEY_HERE",
     authDomain: "YOUR_AUTH_DOMAIN_HERE",
