@@ -15,7 +15,7 @@ function ChatRoom(props) {
 
     const dummy = useRef(); // Dummy is used to scroll down to the latest message when mounting and reloading.
     const fileInputRef = useRef(); // Declare the file input reference.
-    const query = messagesRef.orderBy('createdAt').limit(25); // Order by the latest 25 messages that have been sent.
+    const query = messagesRef.orderBy('createdAt', 'desc').limit(100); // Order by the latest 100 messages that have been sent.
     const [messages] = useCollectionData(query, { idField: 'id' }); // Collects messages.
     const [formValue, setFormValue] = useState(''); // Text field value.
     const [image, setImage] = useState(null); // Image upload.
@@ -139,7 +139,7 @@ function ChatRoom(props) {
             <main>
                 <div>
                     {messages &&
-                        messages.map((msg) => {
+                        messages.slice().reverse().map((msg) => {
                             if (!msg.createdAt) {
                                 return null;
                             }
@@ -168,9 +168,9 @@ function ChatRoom(props) {
             <form onSubmit={sendMessage}>
                 <div className='inputTxtContainer'>
                     <input id='text-input' value={formValue} onChange={(e) => setFormValue(e.target.value)} />
-                    {uploadProgress > 0 ? <progress className="progressBar" value={uploadProgress} max='100' /> : <progress style={{visibility: "hidden"}} className="progressBar" value={uploadProgress} max='0' />}
+                    {uploadProgress > 0 ? <progress className="progressBar" value={uploadProgress} max='100' /> : <progress style={{ visibility: "hidden" }} className="progressBar" value={uploadProgress} max='0' />}
                 </div>
-                
+
                 <input
                     type='file'
                     accept='image/*'
@@ -191,7 +191,7 @@ function ChatRoom(props) {
                 </div>
                 <div className='imgButton' onClick={handleChooseImage}>
                     {image ? <img src='deselectimgicon.png' alt='Send' /> : <img src='selectimgicon.png' alt='Send' />}
-                    
+
                 </div>
                 <div className='sendButton' onClick={sendMessage}>
                     <img src='right-arrow.svg' alt='Send' />
